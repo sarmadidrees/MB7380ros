@@ -1,3 +1,4 @@
+import sys
 import tf
 import rospy
 from std_msgs.msg import String
@@ -44,14 +45,15 @@ if __name__ == '__main__':
                 print("\n Note:")
                 print("Publishing Range Sensor MB7380 data as STRING 'data'.")
 
-                RangeSensorPub = rospy.Publisher('TX', String, queue_size=1)
-                
-                RangeSensorPub.publish(measureData())
-                rospy.spin()
+                RangeSensorPub = rospy.Publisher('/MB7380/data', String, queue_size=10)
+                rospy.init_node('rangeSensor')
+                while not rospy.is_shutdown():
+                        string1 = measureData()
+                        #print string1
+                        RangeSensorPub.publish(string1)
+                #rospy.spin()
 
         
         except KeyboardInterrupt:
                 print "Key-interrupt"
                 sys.exit(0)
-
-        sys.exit(0)
